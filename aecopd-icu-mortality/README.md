@@ -1,11 +1,11 @@
-# AECOPD ICU mortality model: data extraction and cleaning
+# AECOPD ICU mortality model: data extraction, cleaning and analysis code
 
-Code for cohort assembly, variable extraction and data cleaning for the study
+Code for cohort assembly, variable extraction, data cleaning and statistical analysis for the study
 
 > **Transportability of a first-day mortality model for patients with acute exacerbation of COPD in intensive care: development and internal–external validation in 187 US hospitals**
 > Qian Zhang, Feng Zheng, Jian He, Yan Gu, Yilan Wang. Department of Intensive Care Unit, First People's Hospital of Changshu City, Changshu Hospital Affiliated to Soochow University, Changshu, China.
 
-The SQL scripts build the study cohorts and analysis tables in two public critical care databases, **MIMIC-IV v3.1** and **eICU-CRD v2.0**. The Python scripts run the SQL, export CSV snapshots, merge the two databases and apply quality control.
+The SQL scripts build the study cohorts and analysis tables in two public critical care databases, **MIMIC-IV v3.1** and **eICU-CRD v2.0**. The Python scripts run the SQL, export CSV snapshots, merge the two databases and apply quality control. The R scripts in `analysis/` develop and validate the model (see [`analysis/README.md`](analysis/README.md)).
 
 **This repository contains code only. It contains no data.** Access to MIMIC-IV and eICU-CRD requires credentialing on [PhysioNet](https://physionet.org/) and signing the data use agreements.
 
@@ -15,6 +15,7 @@ The SQL scripts build the study cohorts and analysis tables in two public critic
 - The MIMIC-IV derived tables (`mimiciv_derived`), built with the PostgreSQL concepts scripts in mimic-code (`mimic-iv/concepts_postgres`)
 - Optional: the MIMIC-IV-ED module (`mimiciv_ed`), used for emergency department corticosteroids and pneumonia diagnoses
 - Python 3.13 (tested with 3.13.16) and the packages in `python/requirements.txt`
+- For the analysis: R 4.5.1 and the packages listed in `analysis/README.md`
 
 ```
 pip install -r python/requirements.txt
@@ -82,7 +83,7 @@ All outputs are written to `OUTPUT_DIR`. `<tag>` is `trial` or the date of the f
 - **Quality control.** Values outside plausible ranges (table `QC_RULES` in `clean.py`) are set to missing; age above 89 years is set to 90.
 - **Clusters for internal–external cross-validation.** 1, MIMIC-IV ICD-9 era; 2, MIMIC-IV ICD-10 era; 3–6, eICU-CRD Midwest, Northeast, South and West; 7, eICU-CRD region not recorded.
 
-The model development and validation were performed in R; see the methods of the paper.
+Model development and validation: see [`analysis/README.md`](analysis/README.md).
 
 ## Notes
 
